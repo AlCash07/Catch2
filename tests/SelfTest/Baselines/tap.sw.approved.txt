@@ -3195,6 +3195,12 @@ ok {test-number} - approx( d ) == 1.22 for: Approx( 1.23 ) == 1.22
 ok {test-number} - approx( d ) == 1.24 for: Approx( 1.23 ) == 1.24
 # Use a custom approx
 ok {test-number} - approx( d ) != 1.25 for: Approx( 1.23 ) != 1.25
+# User provided comparison operators
+ok {test-number} - adl::always_true{} for: 1
+# User provided comparison operators
+ok {test-number} - 0 == adl::always_true{} for: 0 == 1
+# User provided comparison operators
+ok {test-number} - 0 <= adl::always_true{} for: 0 <= 1
 # Variadic macros
 ok {test-number} - with 1 message: 'no assertions'
 # Vector Approx matcher
@@ -4010,5 +4016,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2009
+1..2012
 

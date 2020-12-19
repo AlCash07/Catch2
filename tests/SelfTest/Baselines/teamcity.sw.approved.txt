@@ -581,6 +581,8 @@ Exception.tests.cpp:<line number>|nunexpected exception with message:|n  "3.14"'
 ##teamcity[testFinished name='Usage of the SizeIs range matcher' duration="{duration}"]
 ##teamcity[testStarted name='Use a custom approx']
 ##teamcity[testFinished name='Use a custom approx' duration="{duration}"]
+##teamcity[testStarted name='User provided comparison operators']
+##teamcity[testFinished name='User provided comparison operators' duration="{duration}"]
 ##teamcity[testStarted name='Variadic macros']
 ##teamcity[testFinished name='Variadic macros' duration="{duration}"]
 ##teamcity[testStarted name='Vector Approx matcher']

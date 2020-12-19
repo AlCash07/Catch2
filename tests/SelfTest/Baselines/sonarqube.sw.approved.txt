@@ -428,6 +428,7 @@ Class.tests.cpp:<line number>
     <testCase name="Assertion macros support bit operators and bool conversions" duration="{duration}"/>
     <testCase name="Lambdas in assertions" duration="{duration}"/>
     <testCase name="Optionally static assertions" duration="{duration}"/>
+    <testCase name="User provided comparison operators" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/UsageTests/Condition.tests.cpp">
     <testCase name="'Not' checks that should fail" duration="{duration}">

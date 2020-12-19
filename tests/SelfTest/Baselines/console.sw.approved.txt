@@ -12333,6 +12333,27 @@ with expansion:
   Approx( 1.23 ) != 1.25
 
 -------------------------------------------------------------------------------
+User provided comparison operators
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( adl::always_true{} )
+with expansion:
+  1
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 == adl::always_true{} )
+with expansion:
+  0 == 1
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 <= adl::always_true{} )
+with expansion:
+  0 <= 1
+
+-------------------------------------------------------------------------------
 Variadic macros
   Section with one argument
 -------------------------------------------------------------------------------
@@ -15681,6 +15702,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  351 |  261 passed |  86 failed |  4 failed as expected
-assertions: 2009 | 1840 passed | 148 failed | 21 failed as expected
+test cases:  352 |  262 passed |  86 failed |  4 failed as expected
+assertions: 2012 | 1843 passed | 148 failed | 21 failed as expected
 

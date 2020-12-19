@@ -239,6 +239,7 @@ Message from section two
 :test-result: PASS Upcasting special member functions
 :test-result: PASS Usage of the SizeIs range matcher
 :test-result: PASS Use a custom approx
+:test-result: PASS User provided comparison operators
 :test-result: PASS Variadic macros
 :test-result: PASS Vector Approx matcher
 :test-result: FAIL Vector Approx matcher -- failing
