@@ -259,3 +259,26 @@ TEST_CASE("Assertion macros support bit operators and bool conversions", "[compi
     REQUIRE_FALSE(lhs ^ lhs);
 }
 
+namespace adl {
+
+struct always_true {
+    operator bool() const { return true; }
+};
+
+template <class T, class U>
+auto operator == (T&&, U&&) {
+    return always_true{};
+}
+
+template <class T, class U>
+auto operator <= (T&&, U&&) {
+    return always_true{};
+}
+
+}
+
+TEST_CASE("User provided comparison operators", "[compilation]") {
+    REQUIRE(adl::always_true{});
+    REQUIRE(0 == adl::always_true{});
+    REQUIRE(0 <= adl::always_true{});
+}
