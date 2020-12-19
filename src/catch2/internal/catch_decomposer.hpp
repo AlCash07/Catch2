@@ -183,38 +183,60 @@ namespace Catch {
     public:
         explicit ExprLhs( LhsT lhs ) : m_lhs( lhs ) {}
 
-        template<typename RhsT>
-        auto operator == ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+        auto operator == ( RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> const {
+            return { compareEqual( m_lhs, rhs ), m_lhs, "=="_sr, std::forward<RhsT>(rhs) };
+        }
+        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+        auto operator == ( RhsT rhs ) -> BinaryExpr<LhsT, RhsT> const {
             return { compareEqual( m_lhs, rhs ), m_lhs, "=="_sr, rhs };
         }
-        auto operator == ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
-            return { m_lhs == rhs, m_lhs, "=="_sr, rhs };
-        }
 
-        template<typename RhsT>
-        auto operator != ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+        auto operator != ( RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> const {
+            return { compareNotEqual( m_lhs, rhs ), m_lhs, "!="_sr, std::forward<RhsT>(rhs) };
+        }
+        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+        auto operator != ( RhsT rhs ) -> BinaryExpr<LhsT, RhsT> const {
             return { compareNotEqual( m_lhs, rhs ), m_lhs, "!="_sr, rhs };
         }
-        auto operator != ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
-            return { m_lhs != rhs, m_lhs, "!="_sr, rhs };
-        }
 
-        template<typename RhsT>
-        auto operator > ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+        auto operator > ( RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> const {
+            return { static_cast<bool>(m_lhs > rhs), m_lhs, ">"_sr, std::forward<RhsT>(rhs) };
+        }
+        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+        auto operator > ( RhsT rhs ) -> BinaryExpr<LhsT, RhsT> const {
             return { static_cast<bool>(m_lhs > rhs), m_lhs, ">"_sr, rhs };
         }
-        template<typename RhsT>
-        auto operator < ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+
+        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+        auto operator < ( RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> const {
+            return { static_cast<bool>(m_lhs < rhs), m_lhs, "<"_sr, std::forward<RhsT>(rhs) };
+        }
+        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+        auto operator < ( RhsT rhs ) -> BinaryExpr<LhsT, RhsT> const {
             return { static_cast<bool>(m_lhs < rhs), m_lhs, "<"_sr, rhs };
         }
-        template<typename RhsT>
-        auto operator >= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+
+        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+        auto operator >= ( RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> const {
+            return { static_cast<bool>(m_lhs >= rhs), m_lhs, ">="_sr, std::forward<RhsT>(rhs) };
+        }
+        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+        auto operator >= ( RhsT rhs ) -> BinaryExpr<LhsT, RhsT> const {
             return { static_cast<bool>(m_lhs >= rhs), m_lhs, ">="_sr, rhs };
         }
-        template<typename RhsT>
-        auto operator <= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+
+        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+        auto operator <= ( RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> const {
+            return { static_cast<bool>(m_lhs <= rhs), m_lhs, "<="_sr, std::forward<RhsT>(rhs) };
+        }
+        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+        auto operator <= ( RhsT rhs ) -> BinaryExpr<LhsT, RhsT> const {
             return { static_cast<bool>(m_lhs <= rhs), m_lhs, "<="_sr, rhs };
         }
+
         template <typename RhsT>
         auto operator | (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
             return { static_cast<bool>(m_lhs | rhs), m_lhs, "|"_sr, rhs };
@@ -255,13 +277,14 @@ namespace Catch {
     }
 
     struct Decomposer {
-        template<typename T>
-        auto operator <= ( T const& lhs ) -> ExprLhs<T const&> {
-            return ExprLhs<T const&>{ lhs };
+        template<typename T, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<T>>::value, int> = 0>
+        auto operator <= ( T && lhs ) -> ExprLhs<T> {
+            return ExprLhs<T>{ std::forward<T>(lhs) };
         }
 
-        auto operator <=( bool value ) -> ExprLhs<bool> {
-            return ExprLhs<bool>{ value };
+        template<typename T, std::enable_if_t<std::is_arithmetic<T>::value, int> = 0>
+        auto operator <= ( T value ) -> ExprLhs<T> {
+            return ExprLhs<T>{ value };
         }
     };
 
