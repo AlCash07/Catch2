@@ -3290,7 +3290,21 @@ ok {test-number} - adl::always_true{} for: 1
 # User provided comparison operators
 ok {test-number} - 0 == adl::always_true{} for: 0 == 1
 # User provided comparison operators
+ok {test-number} - 0 != adl::always_true{} for: 0 != 1
+# User provided comparison operators
+ok {test-number} - 0 < adl::always_true{} for: 0 < 1
+# User provided comparison operators
+ok {test-number} - 0 > adl::always_true{} for: 0 > 1
+# User provided comparison operators
 ok {test-number} - 0 <= adl::always_true{} for: 0 <= 1
+# User provided comparison operators
+ok {test-number} - 0 >= adl::always_true{} for: 0 >= 1
+# User provided comparison operators
+ok {test-number} - 0 | adl::always_true{} for: 0 | 1
+# User provided comparison operators
+ok {test-number} - 0 & adl::always_true{} for: 0 & 1
+# User provided comparison operators
+ok {test-number} - 0 ^ adl::always_true{} for: 0 ^ 1
 # Variadic macros
 ok {test-number} - with 1 message: 'no assertions'
 # Vector Approx matcher
@@ -4106,5 +4120,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2057
+1..2064
 

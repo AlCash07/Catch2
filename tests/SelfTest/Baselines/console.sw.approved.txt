@@ -12673,9 +12673,44 @@ with expansion:
   0 == 1
 
 Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 != adl::always_true{} )
+with expansion:
+  0 != 1
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 < adl::always_true{} )
+with expansion:
+  0 < 1
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 > adl::always_true{} )
+with expansion:
+  0 > 1
+
+Compilation.tests.cpp:<line number>: PASSED:
   REQUIRE( 0 <= adl::always_true{} )
 with expansion:
   0 <= 1
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 >= adl::always_true{} )
+with expansion:
+  0 >= 1
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 | adl::always_true{} )
+with expansion:
+  0 | 1
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 & adl::always_true{} )
+with expansion:
+  0 & 1
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 ^ adl::always_true{} )
+with expansion:
+  0 ^ 1
 
 -------------------------------------------------------------------------------
 Variadic macros
@@ -16027,5 +16062,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  355 |  265 passed |  86 failed |  4 failed as expected
-assertions: 2057 | 1888 passed | 148 failed | 21 failed as expected
+assertions: 2064 | 1895 passed | 148 failed | 21 failed as expected
 

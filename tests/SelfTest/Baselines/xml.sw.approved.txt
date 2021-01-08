@@ -15129,10 +15129,66 @@ There is no extra whitespace here
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
         <Original>
+          0 != adl::always_true{}
+        </Original>
+        <Expanded>
+          0 != 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          0 &lt; adl::always_true{}
+        </Original>
+        <Expanded>
+          0 &lt; 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          0 > adl::always_true{}
+        </Original>
+        <Expanded>
+          0 > 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
           0 &lt;= adl::always_true{}
         </Original>
         <Expanded>
           0 &lt;= 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          0 >= adl::always_true{}
+        </Original>
+        <Expanded>
+          0 >= 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          0 | adl::always_true{}
+        </Original>
+        <Expanded>
+          0 | 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          0 &amp; adl::always_true{}
+        </Original>
+        <Expanded>
+          0 &amp; 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          0 ^ adl::always_true{}
+        </Original>
+        <Expanded>
+          0 ^ 1
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -19048,9 +19104,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1888" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1895" failures="149" expectedFailures="21"/>
     <OverallResultsCases successes="265" failures="86" expectedFailures="4"/>
   </Group>
-  <OverallResults successes="1888" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1895" failures="148" expectedFailures="21"/>
   <OverallResultsCases successes="265" failures="86" expectedFailures="4"/>
 </Catch>
