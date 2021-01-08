@@ -183,33 +183,6 @@ namespace Catch {
     struct ExprLhs {
         LhsT m_lhs;
 
-        template <typename RhsT>
-        auto operator | (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs | rhs), m_lhs, "|"_sr, rhs };
-        }
-        template <typename RhsT>
-        auto operator & (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs & rhs), m_lhs, "&"_sr, rhs };
-        }
-        template <typename RhsT>
-        auto operator ^ (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs ^ rhs), m_lhs, "^"_sr, rhs };
-        }
-
-        template<typename RhsT>
-        auto operator && ( RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<RhsT>::value,
-            "operator&& is not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
-
-        template<typename RhsT>
-        auto operator || ( RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
-            static_assert(always_false<RhsT>::value,
-            "operator|| is not supported inside assertions, "
-            "wrap the expression inside parentheses, or decompose it");
-        }
-
         auto makeUnaryExpr() const -> UnaryExpr<LhsT> {
             return UnaryExpr<LhsT>{ m_lhs };
         }
@@ -279,6 +252,53 @@ namespace Catch {
     auto operator <= ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
         bool result = static_cast<bool>(lhs.m_lhs <= rhs);
         return { result, std::move(lhs).m_lhs, "<="_sr, rhs };
+    }
+
+    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+    auto operator | ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> {
+        bool result = static_cast<bool>(lhs.m_lhs | rhs);
+        return { result, std::move(lhs).m_lhs, "|"_sr, std::forward<RhsT>(rhs) };
+    }
+    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+    auto operator | ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
+        bool result = static_cast<bool>(lhs.m_lhs | rhs);
+        return { result, std::move(lhs).m_lhs, "|"_sr, rhs };
+    }
+
+    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+    auto operator & ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> {
+        bool result = static_cast<bool>(lhs.m_lhs & rhs);
+        return { result, std::move(lhs).m_lhs, "&"_sr, std::forward<RhsT>(rhs) };
+    }
+    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+    auto operator & ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
+        bool result = static_cast<bool>(lhs.m_lhs & rhs);
+        return { result, std::move(lhs).m_lhs, "&"_sr, rhs };
+    }
+
+    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+    auto operator ^ ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> {
+        bool result = static_cast<bool>(lhs.m_lhs ^ rhs);
+        return { result, std::move(lhs).m_lhs, "^"_sr, std::forward<RhsT>(rhs) };
+    }
+    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+    auto operator ^ ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
+        bool result = static_cast<bool>(lhs.m_lhs ^ rhs);
+        return { result, std::move(lhs).m_lhs, "^"_sr, rhs };
+    }
+
+    template<typename LhsT, typename RhsT>
+    auto operator && ( ExprLhs<LhsT> &&, RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
+        static_assert(always_false<RhsT>::value,
+        "operator&& is not supported inside assertions, "
+        "wrap the expression inside parentheses, or decompose it");
+    }
+
+    template<typename LhsT, typename RhsT>
+    auto operator || ( ExprLhs<LhsT> &&, RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
+        static_assert(always_false<RhsT>::value,
+        "operator|| is not supported inside assertions, "
+        "wrap the expression inside parentheses, or decompose it");
     }
 
     void handleExpression( ITransientExpression const& expr );
