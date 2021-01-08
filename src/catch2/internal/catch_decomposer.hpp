@@ -210,82 +210,27 @@ namespace Catch {
         return { result, std::move(lhs).m_lhs, "!="_sr, rhs };
     }
 
-    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
-    auto operator > ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs > rhs);
-        return { result, std::move(lhs).m_lhs, ">"_sr, std::forward<RhsT>(rhs) };
-    }
-    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
-    auto operator > ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs > rhs);
-        return { result, std::move(lhs).m_lhs, ">"_sr, rhs };
-    }
-
-    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
-    auto operator < ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs < rhs);
-        return { result, std::move(lhs).m_lhs, "<"_sr, std::forward<RhsT>(rhs) };
-    }
-    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
-    auto operator < ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs < rhs);
-        return { result, std::move(lhs).m_lhs, "<"_sr, rhs };
+#define CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(op) \
+    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0> \
+    auto operator op ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> { \
+        bool result = static_cast<bool>(lhs.m_lhs op rhs); \
+        return { result, std::move(lhs).m_lhs, #op##_sr, std::forward<RhsT>(rhs) }; \
+    } \
+    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0> \
+    auto operator op ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> { \
+        bool result = static_cast<bool>(lhs.m_lhs op rhs); \
+        return { result, std::move(lhs).m_lhs, #op##_sr, rhs }; \
     }
 
-    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
-    auto operator >= ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs >= rhs);
-        return { result, std::move(lhs).m_lhs, ">="_sr, std::forward<RhsT>(rhs) };
-    }
-    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
-    auto operator >= ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs >= rhs);
-        return { result, std::move(lhs).m_lhs, ">="_sr, rhs };
-    }
+CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(<)
+CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(>)
+CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(<=)
+CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(>=)
+CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(|)
+CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(&)
+CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(^)
 
-    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
-    auto operator <= ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs <= rhs);
-        return { result, std::move(lhs).m_lhs, "<="_sr, std::forward<RhsT>(rhs) };
-    }
-    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
-    auto operator <= ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs <= rhs);
-        return { result, std::move(lhs).m_lhs, "<="_sr, rhs };
-    }
-
-    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
-    auto operator | ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs | rhs);
-        return { result, std::move(lhs).m_lhs, "|"_sr, std::forward<RhsT>(rhs) };
-    }
-    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
-    auto operator | ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs | rhs);
-        return { result, std::move(lhs).m_lhs, "|"_sr, rhs };
-    }
-
-    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
-    auto operator & ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs & rhs);
-        return { result, std::move(lhs).m_lhs, "&"_sr, std::forward<RhsT>(rhs) };
-    }
-    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
-    auto operator & ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs & rhs);
-        return { result, std::move(lhs).m_lhs, "&"_sr, rhs };
-    }
-
-    template<typename LhsT, typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
-    auto operator ^ ( ExprLhs<LhsT> && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs ^ rhs);
-        return { result, std::move(lhs).m_lhs, "^"_sr, std::forward<RhsT>(rhs) };
-    }
-    template<typename LhsT, typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
-    auto operator ^ ( ExprLhs<LhsT> && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
-        bool result = static_cast<bool>(lhs.m_lhs ^ rhs);
-        return { result, std::move(lhs).m_lhs, "^"_sr, rhs };
-    }
+#undef CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR
 
     template<typename LhsT, typename RhsT>
     auto operator && ( ExprLhs<LhsT> &&, RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
