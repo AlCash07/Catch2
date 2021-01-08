@@ -271,7 +271,42 @@ auto operator == (T&&, U&&) {
 }
 
 template <class T, class U>
+auto operator != (T&&, U&&) {
+    return always_true{};
+}
+
+template <class T, class U>
+auto operator < (T&&, U&&) {
+    return always_true{};
+}
+
+template <class T, class U>
+auto operator > (T&&, U&&) {
+    return always_true{};
+}
+
+template <class T, class U>
 auto operator <= (T&&, U&&) {
+    return always_true{};
+}
+
+template <class T, class U>
+auto operator >= (T&&, U&&) {
+    return always_true{};
+}
+
+template <class T, class U>
+auto operator | (T&&, U&&) {
+    return always_true{};
+}
+
+template <class T, class U>
+auto operator & (T&&, U&&) {
+    return always_true{};
+}
+
+template <class T, class U>
+auto operator ^ (T&&, U&&) {
     return always_true{};
 }
 
@@ -280,5 +315,12 @@ auto operator <= (T&&, U&&) {
 TEST_CASE("User provided comparison operators", "[compilation]") {
     REQUIRE(adl::always_true{});
     REQUIRE(0 == adl::always_true{});
+    REQUIRE(0 != adl::always_true{});
+    REQUIRE(0 < adl::always_true{});
+    REQUIRE(0 > adl::always_true{});
     REQUIRE(0 <= adl::always_true{});
+    REQUIRE(0 >= adl::always_true{});
+    REQUIRE(0 | adl::always_true{});
+    REQUIRE(0 & adl::always_true{});
+    REQUIRE(0 ^ adl::always_true{});
 }
