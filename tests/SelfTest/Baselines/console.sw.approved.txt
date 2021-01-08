@@ -16026,6 +16026,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  354 |  264 passed |  86 failed |  4 failed as expected
-assertions: 2054 | 1885 passed | 148 failed | 21 failed as expected
+test cases:  355 |  265 passed |  86 failed |  4 failed as expected
+assertions: 2057 | 1888 passed | 148 failed | 21 failed as expected
 
