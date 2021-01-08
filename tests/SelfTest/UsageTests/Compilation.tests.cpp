@@ -265,50 +265,23 @@ struct always_true {
     operator bool() const { return true; }
 };
 
-template <class T, class U>
-auto operator == (T&&, U&&) {
-    return always_true{};
+#define COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(op) \
+template <class T, class U> \
+auto operator op (T&&, U&&) { \
+    return always_true{}; \
 }
 
-template <class T, class U>
-auto operator != (T&&, U&&) {
-    return always_true{};
-}
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(==);
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(!=);
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(<);
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(>);
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(<=);
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(>=);
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(|);
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(&);
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(^);
 
-template <class T, class U>
-auto operator < (T&&, U&&) {
-    return always_true{};
-}
-
-template <class T, class U>
-auto operator > (T&&, U&&) {
-    return always_true{};
-}
-
-template <class T, class U>
-auto operator <= (T&&, U&&) {
-    return always_true{};
-}
-
-template <class T, class U>
-auto operator >= (T&&, U&&) {
-    return always_true{};
-}
-
-template <class T, class U>
-auto operator | (T&&, U&&) {
-    return always_true{};
-}
-
-template <class T, class U>
-auto operator & (T&&, U&&) {
-    return always_true{};
-}
-
-template <class T, class U>
-auto operator ^ (T&&, U&&) {
-    return always_true{};
-}
+#undef COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR
 
 }
 
