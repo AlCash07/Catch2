@@ -246,13 +246,6 @@ CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(^)
         "wrap the expression inside parentheses, or decompose it");
     }
 
-    void handleExpression( ITransientExpression const& expr );
-
-    template<typename T>
-    void handleExpression( ExprLhs<T> const& expr ) {
-        handleExpression( expr.makeUnaryExpr() );
-    }
-
     struct Decomposer {};
 
     template<typename T, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<T>>::value, int> = 0>
