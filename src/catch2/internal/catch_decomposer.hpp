@@ -233,14 +233,14 @@ CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(^)
 #undef CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR
 
     template<typename LhsT, typename RhsT>
-    auto operator && ( ExprLhs<LhsT> &&, RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
+    auto operator && ( ExprLhs<LhsT> &&, RhsT && ) -> BinaryExpr<LhsT, RhsT> {
         static_assert(always_false<RhsT>::value,
         "operator&& is not supported inside assertions, "
         "wrap the expression inside parentheses, or decompose it");
     }
 
     template<typename LhsT, typename RhsT>
-    auto operator || ( ExprLhs<LhsT> &&, RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
+    auto operator || ( ExprLhs<LhsT> &&, RhsT && ) -> BinaryExpr<LhsT, RhsT> {
         static_assert(always_false<RhsT>::value,
         "operator|| is not supported inside assertions, "
         "wrap the expression inside parentheses, or decompose it");
